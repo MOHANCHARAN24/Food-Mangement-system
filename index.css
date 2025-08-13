@@ -1,0 +1,12 @@
+/* Navigation links styling */
+.nav-links {
+	margin-bottom: 16px;
+}
+.nav-links a {
+	margin: 0 4px;
+	text-decoration: none;
+	color: #007bff;
+}
+.nav-links a:hover {
+	text-decoration: underline;
+}
