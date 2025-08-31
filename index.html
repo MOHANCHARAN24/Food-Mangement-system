@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TOMATO</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCm4i2v3uxajSwxJGqpHDz2MaMHAHz_tdc&libraries=places"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('./assets/desktop-wallpaper-delicious-food-high-quality-resolution.jpg');
+      background-size: cover;
+      margin: 0;
+      color: #222;
+    min-height: 100vh;
+    width: 100vw;
+    overflow: auto;
+    
+    }
+    .navbar { background: #000000; color: #fff; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
+    .navbar a { color: #fff; text-decoration: none; margin: 0 1rem; font-weight: bold; }
+    .navbar a.active, .navbar a:hover { color: #ffb300; }
+    .container {
+      max-width: 400px;
+      margin: 2rem auto;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 2rem;
+    }
+    h2 { text-align: center; color: #fef9f9; }
+    label { display: block; margin-top: 1rem; font-weight: bold; }
+    input, select { width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid #43a047; font-size: 1rem; margin-top: 0.3rem; }
+    button { width: 100%; padding: 0.75rem; margin-top: 1.5rem; background: #e53935; color: #fff; border: none; border-radius: 30px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+    button:hover { background: #43a047; }
+    .switch-link, .nav-links { text-align: center; margin-top: 1rem; }
+    .switch-link a, .nav-links a { color: #007bff; font-weight: bold; text-decoration: none; }
+    .switch-link a:hover, .nav-links a:hover { text-decoration: underline; }
+    .hero { background: #ffffff; text-align: center; padding: 2rem 1rem; border-radius: 10px; margin-bottom: 2rem; }
+    .product-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .product-card {
+      background: rgba(255,255,255,0.85);
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      padding: 0;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 340px;
+    }
+    .product-card:hover {
+      transform: translateY(-6px) scale(1.04);
+      box-shadow: 0 8px 32px rgba(229,57,53,0.18);
+    }
+    .product-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 0;
+      margin-bottom: 0.5rem;
+    }
+    .product-card .price-offer {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: linear-gradient(90deg, #222, #444);
+      color: #fff;
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 4px 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .product-card .info {
+      padding: 1rem 1rem 0.5rem 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .product-card h3 {
+      color: #222;
+      margin-bottom: 0.3rem;
+      font-size: 1.15rem;
+      font-weight: bold;
+    }
+    .product-card .meta {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 0.3rem;
+      font-size: 0.98rem;
+    }
+    .product-card .meta .star {
+      color: #43a047;
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-right: 2px;
+    }
+    .product-card .desc {
+      color: #555;
+      font-size: 0.98rem;
+      margin-bottom: 0.2rem;
+    }
+    .product-card .location {
+      color: #888;
+      font-size: 0.95rem;
+      margin-top: auto;
+    }
+    .footer { background: #000000; color: #fff; text-align: center; padding: 1rem 0; margin-top: 2rem; font-size: 1rem; letter-spacing: 1px; border-radius: 0 0 10px 10px; position: fixed; bottom: 0; left: 0; right: 0; }
+    @media (max-width: 700px) { .product-list { flex-direction: column; align-items: center; } .container { max-width: 95vw; } .navbar { flex-direction: column; gap: 1rem; } }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/javascript">
+    const { useState } = React;
+
+    function Navbar(props) {
+      const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
+      React.useEffect(() => {
+        const handleClickOutside = () => setShowProfileDropdown(false);
+        if (showProfileDropdown) {
+          document.body.addEventListener('click', handleClickOutside);
+        }
+        return () => {
+          document.body.removeEventListener('click', handleClickOutside);
+        };
+      }, [showProfileDropdown]);
+      return (
+        React.createElement("nav", { className: "navbar", style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
+          React.createElement("span", { style: { fontWeight: "bold", fontSize: "1.3rem" } }, "TOMATO"),
+          React.createElement("div", null,
+            React.createElement("a", { href: "#", className: props.page === "home" ? "active" : "", onClick: e => { e.preventDefault(); props.setPage("home"); } }, "Home"),
+            React.createElement("a", { href: "#", className: props.page === "login" ? "active" : "", onClick: e => { e.preventDefault(); props.setPage("login"); } }, "Login"),
+            React.createElement("a", { href: "#", className: props.page === "signup" ? "active" : "", onClick: e => { e.preventDefault(); props.setPage("signup"); } }, "Sign Up")
+          ),
+          React.createElement("div", { style: { position: 'relative', display: 'inline-block' } },
+            React.createElement("button", {
+              style: { padding: '8px 16px', borderRadius: '20px', background: '#fff', border: '1px solid #ccc', cursor: 'pointer', color: '#e53935', fontWeight: 'bold' },
+              onClick: e => {
+                e.stopPropagation();
+                setShowProfileDropdown(v => !v);
+              }
+            }, "Profile \u25BC"),
+            showProfileDropdown && React.createElement("div", {
+              style: {
+                position: 'absolute',
+                right: 0,
+                top: '110%',
+                background: '#fff',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                borderRadius: '8px',
+                minWidth: '180px',
+                zIndex: 1000
+              }
+            },
+              React.createElement("a", { href: "#", style: { display: 'block', padding: '10px', textDecoration: 'none', color: '#e53935' }, onClick: e => { e.preventDefault(); alert('Account section'); } }, "Account"),
+              React.createElement("a", { href: "#", style: { display: 'block', padding: '10px', textDecoration: 'none', color: '#e53935' }, onClick: e => { e.preventDefault(); alert('Orders section'); } }, "Orders"),
+              React.createElement("a", { href: "#", style: { display: 'block', padding: '10px', textDecoration: 'none', color: '#e53935' }, onClick: e => { e.preventDefault(); alert('Payments section'); } }, "Payments"),
+              React.createElement("a", { href: "#", style: { display: 'block', padding: '10px', textDecoration: 'none', color: '#e53935' }, onClick: e => { e.preventDefault(); alert('Cashbacks section'); } }, "Cashbacks"),
+              React.createElement("a", { href: "#", style: { display: 'block', padding: '10px', textDecoration: 'none', color: '#e53935' }, onClick: e => { e.preventDefault(); alert('Wallets section'); } }, "Wallets")
+            )
+          )
+        )
+      );
+    }
+
+    function Home() {
+      const [location, setLocation] = React.useState("");
+      const [coords, setCoords] = React.useState(null);
+      const [restaurants, setRestaurants] = React.useState([]);
+      const [apiLoaded, setApiLoaded] = React.useState(!!(window.google && window.google.maps));
+      const inputRef = React.useRef(null);
+      const mapRef = React.useRef(null);
+
+      React.useEffect(() => {
+        if (window.google && window.google.maps && inputRef.current) {
+          setApiLoaded(true);
+          const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current);
+          autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (place.geometry) {
+              setLocation(place.formatted_address);
+              setCoords({ lat: place.geometry.location.lat(), lng: place.geometry.location.lng() });
+            } else if (place.name) {
+              setLocation(place.name);
+              setCoords(null);
+            }
+          });
+        } else {
+          setApiLoaded(false);
+        }
+      }, []);
+
+      React.useEffect(() => {
+        if (coords && mapRef.current && apiLoaded) {
+          const map = new window.google.maps.Map(mapRef.current, {
+            center: coords,
+            zoom: 15
+          });
+          new window.google.maps.Marker({ position: coords, map });
+        }
+      }, [coords, apiLoaded]);
+
+      // Fetch restaurants (mock)
+      React.useEffect(() => {
+        if (coords) {
+          setRestaurants([
+            { id: 1, name: "Tomato Restaurant" },
+            { id: 2, name: "Spicy House" },
+            { id: 3, name: "Green Leaf" }
+          ]);
+        } else {
+          setRestaurants([]);
+        }
+      }, [coords]);
+
+      return (
+        React.createElement("div", { className: "hero" },
+          React.createElement("h1", null, "Pre-Order"),
+          React.createElement("p", null, "Find restaurants near your location!"),
+          apiLoaded
+            ? React.createElement("input", {
+                ref: inputRef,
+                type: "text",
+                placeholder: "Enter your location",
+                style: { width: '80%', padding: '0.5rem', borderRadius: '8px', border: '1px solid #e53935', marginBottom: '1rem' }
+              })
+            : React.createElement("p", { style: { color: 'red' } }, "Google Maps API not loaded. Please check your API key or internet connection."),
+          location && React.createElement("p", null, "Selected Location: ", location),
+          coords && apiLoaded && React.createElement("div", { style: { width: '100%', height: '250px', margin: '1rem 0' }, ref: mapRef }),
+          coords && restaurants.length > 0 && React.createElement("div", null,
+            React.createElement("h2", null, "Restaurants Near You"),
+            React.createElement("ul", null,
+              restaurants.map(r => React.createElement("li", { key: r.id }, r.name))
+            )
+          ),
+          React.createElement("section", { className: "product-list" },
+            React.createElement("div", { className: "product-card" },
+              React.createElement("img", { src: './assets/tiffin.jpeg', alt: 'Varalakshmi Tiffins' }),
+              React.createElement("h3", null, "Varalakshmi Tiffins"),
+              React.createElement("p", null, "Rich flavor, perfect for breakfast and tea.")
+            ),
+            React.createElement("div", { className: "product-card" },
+              React.createElement("img", { src: './assets/dosa.jpg', alt: 'Crispy Dosa' }),
+              React.createElement("h3", null, "Crispy Dosa"),
+              React.createElement("p", null, "Crispy and delicious, great for snacking.")
+            ),
+            React.createElement("div", { className: "product-card" },
+              React.createElement("img", { src: './assets/IdlyVada.jpeg', alt: 'Idly Vada' }),
+              React.createElement("h3", null, "Idly Vada"),
+              React.createElement("p", null, "Soft idly and crunchy vada, a classic combo.")
+            ),
+            React.createElement("div", { className: "product-card" },
+              React.createElement("img", { src: './assets/waffles.jpeg', alt: 'Waffles' }),
+              React.createElement("h3", null, "Waffles"),
+              React.createElement("p", null, "Golden waffles with syrup, a sweet treat.")
+            ),
+            React.createElement("div", { className: "product-card" },
+              React.createElement("img", { src: './assets/milkshake.jpeg', alt: 'Milkshake' }),
+              React.createElement("h3", null, "Milkshake"),
+              React.createElement("p", null, "Chilled milkshake, perfect for summer.")
+            ),
+            React.createElement("div", { className: "product-card" },
+              React.createElement("img", { src: './assets/chinese.jpg', alt: 'Chinese Platter' }),
+              React.createElement("h3", null, "Chinese Platter"),
+              React.createElement("p", null, "A variety of Chinese delicacies.")
+            )
+          )
+        )
+      );
+    }
+    
+
+    function Login(props) {
+      return (
+        React.createElement("div", { className: "container" },
+          React.createElement("h2", null, "Login"),
+          React.createElement("form", null,
+            React.createElement("label", { htmlFor: "loginEmail" }, "Email Address"),
+            React.createElement("input", { type: "email", id: "loginEmail", required: true, placeholder: "Enter your email" }),
+            React.createElement("label", { htmlFor: "loginPassword" }, "Password"),
+            React.createElement("input", { type: "password", id: "loginPassword", required: true, placeholder: "Enter your password" }),
+            React.createElement("button", { type: "submit" }, "Login")
+          ),
+          React.createElement("div", { className: "switch-link" },
+            "Don't have an account? ",
+            React.createElement("a", { href: "#", onClick: e => { e.preventDefault(); props.setPage("signup"); } }, "Sign Up")
+          )
+        )
+      );
+    }
+
+    function Signup(props) {
+      return (
+        React.createElement("div", { className: "container" },
+          React.createElement("h2", null, "Sign Up"),
+          React.createElement("form", null,
+            React.createElement("label", { htmlFor: "signupFullName" }, "Full Name"),
+            React.createElement("input", { type: "text", id: "signupFullName", required: true, placeholder: "Enter your full name" }),
+            React.createElement("label", { htmlFor: "signupEmail" }, "Email Address"),
+            React.createElement("input", { type: "email", id: "signupEmail", required: true, placeholder: "Enter your email" }),
+            React.createElement("label", { htmlFor: "signupPassword" }, "Password"),
+            React.createElement("input", { type: "password", id: "signupPassword", required: true, placeholder: "Enter your password" }),
+            React.createElement("label", { htmlFor: "confirmPassword" }, "Confirm Password"),
+            React.createElement("input", { type: "password", id: "confirmPassword", required: true, placeholder: "Confirm your password" }),
+            React.createElement("button", { type: "submit" }, "Sign Up")
+          ),
+          React.createElement("div", { className: "switch-link" },
+            "Already have an account? ",
+            React.createElement("a", { href: "#", onClick: e => { e.preventDefault(); props.setPage("login"); } }, "Login")
+          )
+        )
+      );
+    }
+
+    function App() {
+      const [page, setPage] = useState("home");
+      return (
+        React.createElement(React.Fragment, null,
+          React.createElement(Navbar, { page, setPage }),
+          page === "home" && React.createElement(Home, null),
+          page === "login" && React.createElement(Login, { setPage }),
+          page === "signup" && React.createElement(Signup, { setPage }),
+          React.createElement("div", { className: "footer" }, "© 2025 TOMATO. All rights reserved.")
+        )
+      );
+    }
+
+    ReactDOM.render(
+      React.createElement(App, null),
+      document.getElementById("root")
+    );
+  </script>
+    
+</body>
+</html>
