@@ -1,0 +1,277 @@
+body{
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0px;
+}
+.navbar {
+    background-color: #ffffff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo img {
+    height: 30px;
+    margin-right: 10px;
+   
+}
+
+
+/* Services Container - Two Blocks Side by Side */
+.services-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 40px 40px;
+    padding: 0 20px;
+}
+
+.services-container{
+    display:flex;
+    gap:25px;
+    font-family:Arial, sans-serif;
+}
+
+.Recharges,.BillPayments{
+    flex:1;
+    background:#ffffff;
+    padding:20px;
+    border-radius:25px;
+    margin-top: 40px;
+}
+
+.Recharges h2,.BillPayments h2{
+    margin:0 0 20px 0;
+    font-size:24px;
+}
+
+.recharge-options{
+    display:flex;
+    
+    justify-content:space-between;
+    flex-wrap:wrap;
+}
+
+.recharge-options img{
+    width:75px;
+    height:75px;
+    object-fit:contain;
+    margin-bottom:10px;
+    transition:.3s;
+}
+.recharge-options img:hover{
+    transform:scale(1.1);
+}   
+.promotion {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+.suggestion {
+    flex: 1;
+    border-radius: 20px;
+    padding: 30px;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.suggestion img {
+    width:300px;
+    height: 100px;
+    border-radius: 20px;    
+    
+}
+.suggestion  :hover {
+    background-color: #e0e0e0;
+    transform: scale(1.05);
+    transition: all 1.3s ease;
+}
+
+.paytm-footer {
+    font-family: Arial, sans-serif;
+    margin-top: 50px;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+}
+
+.footer-section {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 20px;
+}
+
+.footer-section h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+    cursor: pointer;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    font-size: 14px;
+}
+
+.footer-bottom .social img{
+    width:22px;
+    margin-left: 15px;
+    cursor:pointer;
+}
+.travel-card{
+    background:#fff;
+    border-radius:15px;
+    border:1px solid #ddd;
+    padding:25px;
+    width:90%;
+    margin:50px auto;
+    font-family:Arial, sans-serif;
+}
+
+.travel-menu{
+    display:flex;
+    gap:40px;
+    list-style:none;
+    padding:0 0 20px 0;
+    margin:0;
+    border-bottom:2px solid #e4f3f8;
+}
+
+.travel-menu li{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    padding: 10px;
+    transition: all 0.3s ease;
+}
+
+.travel-menu li img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+    object-fit: contain;
+}
+
+.travel-menu li span {
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+}
+
+.travel-menu li.active{
+    border-bottom:3px solid #00baf2;
+    padding-bottom:10px;
+}
+
+.travel-menu li.active span {
+    color: #00baf2;
+}
+
+.trip-type label{
+    margin-right:30px;
+    font-size:15px;
+}
+
+.fields{
+    display:flex;
+    align-items:center;
+    gap:40px;
+    margin:20px 0;
+}
+
+.field small{
+    font-size:11px;
+    color:#777;
+}
+.field h3{
+    margin:3px 0 0;
+    font-size:17px;
+    font-weight:bold;
+}
+.blue{color:#009ff7;}
+
+.search-btn{
+    background:#00baf2;
+    color:#fff;
+    padding:16px 28px;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+    margin-left:auto;
+}
+
+.special-fare span{
+    font-size:13px;
+    color:#888;
+}
+
+.tags{
+    display:flex;
+    gap:15px;
+    margin-top:15px;
+}
+
+.tag{
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:8px 14px;
+    font-size:12px;
+    cursor:pointer;
+}
+.paytm-money {
+    text-align: center;
+    padding: 20px;
+}
+.paytm-money img {
+    max-width: 50%;
+    height: 50%;
+}
+.support-banner{
+    display:flex;
+    align-items:center;
+    justify-content:space-evenly    ;
+    gap:20px;
+    background:linear-gradient(90deg,#0071ff,#00c6ff);
+    padding:25px 40px;
+    border-radius:70px;
+    font-family:Arial,sans-serif;
+    color:#fff;
+}
+
+.support-banner img{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:#fff;
+    padding:6px;
+}
+
+.support-banner span{
+    font-size:20px;
+    flex:1;
+    margin-left:10px;
+    font-weight:60;
+}
+
+.learn-btn{
+    border:2px solid #fff;
+    padding:10px 25px;
+    border-radius:30px;
+    color:#fff;
+    text-decoration:none;
+    font-weight:60;
+}
