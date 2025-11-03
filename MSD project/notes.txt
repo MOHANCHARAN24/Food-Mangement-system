@@ -1,0 +1,6 @@
+TODO:
+- Start local MongoDB server so the backend can connect.
+- Rerun `npm run dev` from `server/` once MongoDB is up.
+- Seed sample data with `npm run seed`.
+- Smoke test new endpoints: `POST /api/orders/:id/pay`, `PATCH /api/orders/:id/status`, `GET /api/locations`.
+- Integrate map/location data in the frontend UI.
